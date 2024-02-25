@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "air-drawing"
+version = "0.1.0"
+description = ""
+authors = ["DeamCasterX <mcumaple@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+opencv-contrib-python = "^4.9.0.80"
+mediapipe = "^0.10.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
