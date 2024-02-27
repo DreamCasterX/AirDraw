@@ -41,19 +41,19 @@ trail_color_4 = (0, 69, 255)
 drawing = False  # 預設繪圖模式關閉
 while True:
     key = cv2.waitKey(1)  # 等待1毫秒
-    if key == ord("s"):  # 按 's' 鍵儲存畫布
+    if key == ord("s"):  # 按S鍵儲存畫布
         cv2.imwrite("trail_image.png", trail_image)  # 將畫布儲存為 trail_image.png
         print("繪圖已存檔")
 
-    if key == 32:
+    if key == 32:  # 按空白鍵開啟/關閉繪圖
         drawing = not drawing
         if drawing:
-            print("開啟繪圖")
+            print("Drawing mode is ON")
         else:
-            print("關閉繪圖")
-    if key == ord("c"):  # 按 'c' 鍵清除畫布
+            print("Drawing mode is OFF")
+    if key == ord("c"):  # 按C鍵清除畫布
         trail_image = np.zeros((cam_height, cam_width, 3), np.uint8)  # 重設畫布為黑色
-        print("軌跡已清除")
+        print("Canvas cleared")
 
     if key == ord("q"):
         break
@@ -97,18 +97,18 @@ while True:
                     if i == 8:
                         x8, y8 = xPos, yPos
 
-                        # 偵測食指尖，是否在畫布範圍內
-                        if (
-                            rec_width_1 + 9 < x8 < rec_width_2 - 9
-                            and rec_height_1 + 9 < y8 < rec_height_2 - 9
-                        ):
-                            in_canvas = True
-                        else:
-                            in_canvas = False
+                        # # 偵測食指尖，是否在畫布範圍內
+                        # if (
+                        #     rec_width_1 + 9 < x8 < rec_width_2 - 9
+                        #     and rec_height_1 + 9 < y8 < rec_height_2 - 9
+                        # ):
+                        #     in_canvas = True
+                        # else:
+                        #     in_canvas = False
 
                         if (
-                            "drawing" in locals() and drawing and in_canvas
-                        ):  # 如果啟動繪畫模式
+                            "drawing" in locals() and drawing
+                        ):  # and in_canvas   如果啟動繪畫模式
                             cv2.circle(
                                 trail_image, (xPos, yPos), 9, trail_color, cv2.FILLED
                             )
@@ -116,12 +116,12 @@ while True:
         img = cv2.addWeighted(img, 1, trail_image, 1, 0)
 
     # 顯示可繪圖區域外框
-    cv2.rectangle(
-        img,
-        (rec_width_1, rec_height_1),
-        (rec_width_2, rec_height_2),
-        (105, 165, 218),
-        3,
-    )
+    # cv2.rectangle(
+    #     img,
+    #     (rec_width_1, rec_height_1),
+    #     (rec_width_2, rec_height_2),
+    #     (105, 165, 218),
+    #     3,
+    # )
 
     cv2.imshow("img", img)
