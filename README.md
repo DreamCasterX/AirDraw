@@ -1,4 +1,4 @@
-# A camera application lets you use the index finger to draw in the air !
+# Drawing in the air using your finger with the built-in camera !
 
 ### [Install]
 1.  Run `pip install -r requirements.txt`
