@@ -13,7 +13,7 @@
 
 `0`~`9` - Change color
 
-`B` - Hide camera len
+`B` - Hide/Unhide camera len
 
 `S` - Save the current drawing
 
