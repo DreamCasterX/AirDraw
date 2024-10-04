@@ -32,38 +32,44 @@ handCon_style = mpDraw.DrawingSpec(color=(255, 250, 240), thickness=3)  # 手連
 trail_image = np.zeros((cam_height, cam_width, 3), np.uint8)  # 創建一個黑色背景
 
 # 軌跡顏色 (BGR)
-trail_color_1 = (255, 255, 0)  # Cyan
-trail_color_2 = (0, 0, 255)    # Red
-trail_color_3 = (0, 255, 255)  # Yellow
-trail_color_4 = (102, 255, 0)  # Green
-trail_color_5 = (255, 0, 255)  # Pink
-trail_color_6 = (255, 0, 0)    # Blue
-trail_color_7 = (0, 57, 77)    # Brown
+# https://www.rapidtables.com/web/color/RGB_Color.html
+trail_color_1 = (255, 255, 0)   # Cyan
+trail_color_2 = (0, 0, 255)     # Red
+trail_color_3 = (0, 255, 255)   # Yellow
+trail_color_4 = (0, 255, 0)     # Green
+trail_color_5 = (255, 0, 255)   # Pink
+trail_color_6 = (255, 0, 0)     # Blue
+trail_color_7 = (0, 128, 255)   # Orange
+trail_color_8 = (255, 0, 127)   # Purple
+trail_color_9 = (128, 128, 128) # Grey
+trail_color_0 = (255, 255, 255) # White
 
-# 預設軌跡顏色
-selected_color = trail_color_1
 
-# 迴圈區域
-drawing = False  # 預設繪圖模式關閉
-show_skeleton = True  # 預設顯示骨架
+# 預設值
+selected_color = trail_color_0  # 軌跡顏色
+drawing = False                 # 關閉繪圖模式
+show_skeleton = True            # 顯示骨架
+blank_mode = False              # 顯示攝影機畫面
+
 while True:
     key = cv2.waitKey(1)  # 等待1毫秒
-    # 按空白鍵開啟/關閉繪圖
+    # 按空白鍵開啟/關閉繪畫模式
     if key == 32:  
         drawing = not drawing
         show_skeleton = not show_skeleton
-        if drawing:
-            print("Drawing mode is ON")
-        else:
-            print("Drawing mode is OFF")
-    # 按C鍵清除畫布 (重設畫布為黑色)
+        print("Drawing mode is", "ON" if drawing else "OFF")
+    # 按B鍵關閉攝影機畫面
+    if key == ord("b"):
+        blank_mode = not blank_mode
+        print("Camera is", "OFF" if blank_mode else "ON")             
+    # 按C鍵清除畫布
     if key == ord("c"):  
         trail_image = np.zeros((cam_height, cam_width, 3), np.uint8)
         print("Canvas cleared")
     # 按S鍵儲存畫布
     if key == ord("s"):  
         cv2.imwrite("trail_image.png", trail_image)
-        print("繪圖已存檔")
+        print("Canvas saved")
     # 按Q鍵離開程式
     if key == ord("q"):
         break
@@ -87,8 +93,17 @@ while True:
         print("Blue")
         selected_color = trail_color_6
     elif key == ord("7"):
-        print("Brown")
+        print("Orange")
         selected_color = trail_color_7
+    elif key == ord("8"):
+        print("Purple")
+        selected_color = trail_color_8
+    elif key == ord("9"):
+        print("Grey")
+        selected_color = trail_color_9
+    elif key == ord("0"):
+        print("White (default)")
+        selected_color = trail_color_0
     ret, img = cap.read()
 
     # hand_detection
@@ -106,18 +121,17 @@ while True:
                     # 顯示每個手的座標及連線、設定樣式
                     mpDraw.draw_landmarks(img, handLms, mphands.HAND_CONNECTIONS, handLms_style, handCon_style)
                 for i, lm in enumerate(handLms.landmark):  # 輸出每個手的座標點
-                    xPos = int(lm.x * img_width)  # 比例乘上寬度
+                    xPos = int(lm.x * img_width)   # 比例乘上寬度
                     yPos = int(lm.y * img_height)  # 比例乘上高度
 
                     # 記錄拇指與食指座標
                     if i == 8:
                         x8, y8 = xPos, yPos
-                        if (
-                            "drawing" in locals() and drawing
-                        ):  # 如果啟動繪畫模式
-                            cv2.circle(
-                                trail_image, (xPos, yPos), 9, selected_color, cv2.FILLED
-                            )
+                        if ("drawing" in locals() and drawing):
+                            cv2.circle(trail_image, (xPos, yPos), 9, selected_color, cv2.FILLED)
         img = cv2.addWeighted(img, 1, trail_image, 1, 0)
-
-    cv2.imshow("img", img)
+    
+    if not blank_mode:
+        cv2.imshow("img", img)
+    else:
+        cv2.imshow("img", trail_image)
