@@ -11,7 +11,9 @@
 ### [Hotkey] 
 `Space` - Toggle drawing mode On/Off
 
-`1`~`7` - Change color
+`0`~`9` - Change color
+
+`B` - Hide camera len
 
 `S` - Save the current drawing
 
