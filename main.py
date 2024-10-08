@@ -4,10 +4,10 @@ import mediapipe as mp
 
 
 # 攝影機設定
-cam_width, cam_height = 640, 480
+cam_width, cam_height = 1024, 768
 cap = cv2.VideoCapture(0)  # 填入0或1試試看
-cap.set(30, cam_width)  # 調整影像寬度
-cap.set(40, cam_height)  # 調整影像長度
+cap.set(3, cam_width)  # 調整影像寬度
+cap.set(4, cam_height)  # 調整影像長度
 
 # 畫框設定
 rec_width_1 = int(cam_width * 0.1)
@@ -129,6 +129,10 @@ while True:
                         x8, y8 = xPos, yPos
                         if ("drawing" in locals() and drawing):
                             cv2.circle(trail_image, (xPos, yPos), 9, selected_color, cv2.FILLED)
+                            
+        # 確保trail_image與img大小一致
+        trail_image = cv2.resize(trail_image, (img.shape[1], img.shape[0]))
+        # 疊加影像
         img = cv2.addWeighted(img, 1, trail_image, 1, 0)
     
     if not blank_mode:
