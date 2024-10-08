@@ -3,17 +3,12 @@ import numpy as np
 import mediapipe as mp
 
 
-# 攝影機設定
+# Setting camera
 cam_width, cam_height = 1024, 768
 cap = cv2.VideoCapture(0)  # 填入0或1試試看
 cap.set(3, cam_width)  # 調整影像寬度
 cap.set(4, cam_height)  # 調整影像長度
 
-# 畫框設定
-rec_width_1 = int(cam_width * 0.1)
-rec_width_2 = int(cam_width * 0.9)
-rec_height_1 = int(cam_height * 0.1)
-rec_height_2 = int(cam_height * 0.9)
 
 # 使用medidapipe裡的手部辨識功能
 mphands = mp.solutions.hands  
@@ -139,3 +134,6 @@ while True:
         cv2.imshow("img", img)
     else:
         cv2.imshow("img", trail_image)
+        
+cap.release()
+cv2.destroyAllWindows()  
