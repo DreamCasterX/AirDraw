@@ -39,27 +39,27 @@ def air_draw(cap):
     blank_mode = False              # 顯示攝影機畫面
     while True:
         key = cv2.waitKey(1)  # 等待1毫秒
-        # 按空白鍵開啟/關閉繪畫模式
+        # Press 'Space' to turn ON/OFF the drawing mode
         if key == 32:  
             drawing = not drawing
             show_skeleton = not show_skeleton
             print("Drawing mode is", "ON" if drawing else "OFF")
-        # 按B鍵關閉攝影機畫面
+        # Press 'B' to turn ON/OFF the video preview screen
         if key == ord("b"):
             blank_mode = not blank_mode
             print("Camera is", "OFF" if blank_mode else "ON")             
-        # 按C鍵清除畫布
+        # Press 'C' to clear the canvas
         if key == ord("c"):  
             trail_image = np.zeros((cam_height, cam_width, 3), np.uint8)
             print("Canvas cleared")
-        # 按S鍵儲存畫布
+        # Press 'S' to save the canvas
         if key == ord("s"):  
             cv2.imwrite("trail_image.png", trail_image)
             print("Canvas saved")
-        # 按Q鍵離開程式
+        # Press 'Q' to quit the program
         if key == ord("q"):
             break
-        # 按數字鍵選顏色
+        # Press 'Number keys' to change colors
         if key == ord("1"):
             print("Cyan")
             selected_color = trail_color_1
@@ -131,7 +131,7 @@ def face_detect(cap, file="haarcascade_frontalface_default.xml"):
         try:
             faces = detector.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=4)  # 偵測人臉
         except cv2.error:
-            print("找不到XML模型文件，請下載\nhttps://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml\n")
+            print("XML file is not found, please download\nhttps://raw.githubusercontent.com/opencv/opencv/4.x/data/haarcascades/haarcascade_frontalface_default.xml\n")
             break
         for (x, y, w, h) in faces:
             cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)   # 使用綠框標記人臉
@@ -142,7 +142,7 @@ def face_detect(cap, file="haarcascade_frontalface_default.xml"):
     cv2.destroyAllWindows() 
 
 while True:            
-    option = input("[1] 空氣繪圖   [2] 臉部偵測   [Q] 離開\n")    
+    option = input("[1] Air Draw   [2] Face detection   [Q] Quit\n")    
     if option == "1":
         cap = initialize_camera(cam_width, cam_height)
         air_draw(cap)
