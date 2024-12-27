@@ -142,7 +142,7 @@ def face_detect(cap, file="haarcascade_frontalface_default.xml"):
     cv2.destroyAllWindows() 
 
 while True:            
-    option = input("[1] Air Draw   [2] Face detection   [Q] Quit\n")    
+    option = input("[1] Air Draw   [2] Face Detection   [Q] Quit\n")    
     if option == "1":
         cap = initialize_camera(cam_width, cam_height)
         air_draw(cap)
